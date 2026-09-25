@@ -1,0 +1,123 @@
+{
+  "entities": {
+    "Teacher": {
+      "title": "Teacher",
+      "description": "Teacher profile authenticated via Firebase Auth",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "username": { "type": "string" },
+        "email": { "type": "string" },
+        "fullName": { "type": "string" },
+        "subject": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "teacher"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "isDefault": { "type": "boolean" }
+      },
+      "required": ["id", "username", "fullName", "subject", "role"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "Interactive question item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "text": { "type": "string" },
+        "options": { "type": "array" },
+        "correctAnswer": { "type": "string" },
+        "points": { "type": "number" },
+        "timeLimit": { "type": "number" },
+        "category": { "type": "string" },
+        "difficulty": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "type", "text", "correctAnswer"]
+    },
+    "Classroom": {
+      "title": "Classroom",
+      "description": "Classroom group with students",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "grade": { "type": "string" },
+        "subject": { "type": "string" },
+        "students": { "type": "array" },
+        "color": { "type": "string" }
+      },
+      "required": ["id", "name"]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "Interactive class activity configuration",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "subject": { "type": "string" },
+        "questionIds": { "type": "array" },
+        "classId": { "type": "string" },
+        "settings": { "type": "object" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "type", "title"]
+    },
+    "HistorySession": {
+      "title": "HistorySession",
+      "description": "Completed activity game record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "activityTitle": { "type": "string" },
+        "activityType": { "type": "string" },
+        "className": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "studentResults": { "type": "array" }
+      },
+      "required": ["id", "activityTitle"]
+    },
+    "AppSettings": {
+      "title": "AppSettings",
+      "description": "Teacher display and sound preferences",
+      "type": "object",
+      "properties": {
+        "theme": { "type": "string" },
+        "soundEnabled": { "type": "boolean" },
+        "soundVolume": { "type": "number" },
+        "schoolName": { "type": "string" },
+        "teacherName": { "type": "string" },
+        "subject": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/teachers/{teacherId}": {
+      "schema": { "$ref": "#/entities/Teacher" },
+      "description": "Registered teachers directory"
+    },
+    "/teachers/{teacherId}/data/questions": {
+      "schema": { "$ref": "#/entities/Question" },
+      "description": "Questions bank container isolated per teacher"
+    },
+    "/teachers/{teacherId}/data/classes": {
+      "schema": { "$ref": "#/entities/Classroom" },
+      "description": "Classes and students container isolated per teacher"
+    },
+    "/teachers/{teacherId}/data/activities": {
+      "schema": { "$ref": "#/entities/Activity" },
+      "description": "Configured activities container isolated per teacher"
+    },
+    "/teachers/{teacherId}/data/history": {
+      "schema": { "$ref": "#/entities/HistorySession" },
+      "description": "Completed game sessions history container"
+    },
+    "/teachers/{teacherId}/data/settings": {
+      "schema": { "$ref": "#/entities/AppSettings" },
+      "description": "Settings container per teacher"
+    }
+  }
+}
