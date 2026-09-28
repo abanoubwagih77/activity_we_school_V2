@@ -3,7 +3,8 @@ import { useApp } from '../../context/AppContext';
 import { ActivityConfig, ActivityType, ScoreMode, Team } from '../../types';
 import { 
   X, Check, Plus, Trash2, RotateCw, Box, UserCheck, 
-  CheckCircle, Zap, Link2, Layers, Swords, Grid3X3, HelpCircle, Folder, CheckSquare
+  CheckCircle, Zap, Layers, Swords, HelpCircle, Folder, CheckSquare,
+  Flag, Trophy, Package, Target
 } from 'lucide-react';
 import { soundEngine } from '../../utils/audio';
 
@@ -53,10 +54,12 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
     { id: 'student_picker', nameAr: 'اختيار الطلاب', icon: <UserCheck className="w-4 h-4" /> },
     { id: 'true_false', nameAr: 'تحدي صح أو خطأ', icon: <CheckCircle className="w-4 h-4" /> },
     { id: 'speed_quiz', nameAr: 'مسابقة السرعة', icon: <Zap className="w-4 h-4" /> },
-    { id: 'matching', nameAr: 'المطابقة والتوصيل', icon: <Link2 className="w-4 h-4" /> },
     { id: 'memory_cards', nameAr: 'كروت الذاكرة', icon: <Layers className="w-4 h-4" /> },
     { id: 'team_battle', nameAr: 'معركة الفرق', icon: <Swords className="w-4 h-4" /> },
-    { id: 'jeopardy', nameAr: 'شبكة جيبوردي', icon: <Grid3X3 className="w-4 h-4" /> },
+    { id: 'race_track', nameAr: 'سباق الخيول والسيارات', icon: <Flag className="w-4 h-4" /> },
+    { id: 'millionaire', nameAr: 'من سيربح المليون', icon: <Trophy className="w-4 h-4" /> },
+    { id: 'lucky_boxes', nameAr: 'صناديق الحظ الغامضة', icon: <Package className="w-4 h-4" /> },
+    { id: 'target_shoot', nameAr: 'تصويب وضرب الأهداف', icon: <Target className="w-4 h-4" /> },
   ];
 
   const handleToggleQuestion = (id: string) => {
@@ -115,8 +118,8 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
       description: description.trim() || undefined,
       type,
       classId: classId || undefined,
-      scoreMode: type === 'team_battle' ? 'team' : scoreMode,
-      teams: (scoreMode === 'team' || type === 'team_battle') ? teams : undefined,
+      scoreMode: (type === 'team_battle' || type === 'race_track') ? 'team' : scoreMode,
+      teams: (scoreMode === 'team' || type === 'team_battle' || type === 'race_track') ? teams : undefined,
       timerDuration: hasTimer ? timerDuration : 0,
       questionIds: selectedQuestionIds,
       preventQuestionRepeats: preventRepeats,
@@ -271,8 +274,8 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
           {/* STEP 3: Linked Class & Score Mode */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 border-t border-slate-100">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                ربط بقائمة فصل دراسي (اختياري)
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 flex items-center justify-between">
+                <span>قائمة الفصل الدراسي {type === 'student_picker' ? '(قائمة الطلاب) *' : '(اختياري)'}</span>
               </label>
               <select
                 value={classId}
@@ -333,7 +336,7 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
           </div>
 
           {/* Teams Setup if team mode */}
-          {(scoreMode === 'team' || type === 'team_battle') && (
+          {(scoreMode === 'team' || type === 'team_battle' || type === 'race_track') && (
             <div className="p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-indigo-900">
@@ -388,17 +391,27 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
           )}
 
           {/* STEP 4: Select Questions */}
-          {type !== 'student_picker' && (
-            <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block">
-                    حدد الأسئلة التي ترغب في تضمينها بهذا النشاط:
-                  </label>
-                  <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                    تم تحديد {selectedQuestionIds.length} من إجمالي {questions.length} سؤال
-                  </span>
+          <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+            {type === 'student_picker' && (
+              <div className="p-3 rounded-2xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-xs text-indigo-900 dark:text-indigo-200 flex items-center gap-2.5">
+                <UserCheck className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                <div className="leading-relaxed">
+                  <strong>ميزة الأسئلة لاختيار الطلاب:</strong> يمكنك تحديد مجموعة أسئلة ليتم طرح سؤال عشوائي على الطالب الذي يختاره النظام في الحصة مع عداد وقت وخيارات، أو يمكنك تركها فارغة لاختيار الطلاب فقط دون أسئلة.
                 </div>
+              </div>
+            )}
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <label className="text-xs font-bold text-slate-800 dark:text-slate-200 block">
+                  {type === 'student_picker' 
+                    ? 'حدد الأسئلة التي ترغب في توجيهها للطلاب المختارين (اختياري):' 
+                    : 'حدد الأسئلة التي ترغب في تضمينها بهذا النشاط:'}
+                </label>
+                <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                  تم تحديد {selectedQuestionIds.length} من إجمالي {questions.length} سؤال
+                </span>
+              </div>
 
                 <div className="flex items-center gap-2">
                   <button
@@ -578,7 +591,6 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
                 </div>
               )}
             </div>
-          )}
 
           </div>
 

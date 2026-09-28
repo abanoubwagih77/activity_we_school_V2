@@ -4,7 +4,8 @@ import { ActivityConfig, ActivityType } from '../../types';
 import { 
   Play, Plus, Copy, Trash2, Edit3, Search, 
   RotateCw, Box, UserCheck, CheckCircle, Zap, 
-  Link2, Layers, Swords, Grid3X3, Gamepad2, CheckCircle2 
+  Layers, Swords, Gamepad2, CheckCircle2,
+  Flag, Trophy, Package, Target
 } from 'lucide-react';
 import { ActivityBuilderModal } from './ActivityBuilderModal';
 import { soundEngine } from '../../utils/audio';
@@ -26,10 +27,13 @@ export const ActivitiesListView: React.FC = () => {
       case 'student_picker': return 'اختيار الطلاب';
       case 'true_false': return 'صح أو خطأ';
       case 'speed_quiz': return 'مسابقة السرعة';
-      case 'matching': return 'المطابقة والتوصيل';
       case 'memory_cards': return 'كروت الذاكرة';
       case 'team_battle': return 'معركة الفرق';
-      case 'jeopardy': return 'شبكة جيبوردي';
+      case 'race_track': return 'سباق الخيول والسيارات';
+      case 'millionaire': return 'من سيربح المليون (سلم النجاة)';
+      case 'lucky_boxes': return 'صناديق الحظ الغامضة';
+      case 'target_shoot': return 'تصويب وضرب الأهداف';
+      default: return type;
     }
   };
 
@@ -40,10 +44,13 @@ export const ActivitiesListView: React.FC = () => {
       case 'student_picker': return <UserCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />;
       case 'true_false': return <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />;
       case 'speed_quiz': return <Zap className="w-4 h-4 text-rose-600 dark:text-rose-400" />;
-      case 'matching': return <Link2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />;
       case 'memory_cards': return <Layers className="w-4 h-4 text-violet-600 dark:text-violet-400" />;
       case 'team_battle': return <Swords className="w-4 h-4 text-blue-600 dark:text-blue-400" />;
-      case 'jeopardy': return <Grid3X3 className="w-4 h-4 text-teal-600 dark:text-teal-400" />;
+      case 'race_track': return <Flag className="w-4 h-4 text-amber-600 dark:text-amber-400" />;
+      case 'millionaire': return <Trophy className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />;
+      case 'lucky_boxes': return <Package className="w-4 h-4 text-pink-600 dark:text-pink-400" />;
+      case 'target_shoot': return <Target className="w-4 h-4 text-rose-600 dark:text-rose-400" />;
+      default: return <Gamepad2 className="w-4 h-4 text-slate-500" />;
     }
   };
 
@@ -134,10 +141,12 @@ export const ActivitiesListView: React.FC = () => {
             <option value="student_picker">اختيار الطلاب</option>
             <option value="true_false">تحدي صح أو خطأ</option>
             <option value="speed_quiz">مسابقة السرعة</option>
-            <option value="matching">المطابقة والتوصيل</option>
             <option value="memory_cards">كروت الذاكرة</option>
             <option value="team_battle">معركة الفرق</option>
-            <option value="jeopardy">شبكة جيبوردي</option>
+            <option value="race_track">سباق الخيول والسيارات</option>
+            <option value="millionaire">من سيربح المليون (سلم النجاة)</option>
+            <option value="lucky_boxes">صناديق الحظ الغامضة</option>
+            <option value="target_shoot">تصويب وضرب الأهداف</option>
           </select>
         </div>
 

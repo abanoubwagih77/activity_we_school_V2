@@ -21,10 +21,12 @@ export const HistoryView: React.FC = () => {
       case 'student_picker': return 'اختيار الطلاب';
       case 'true_false': return 'صح أو خطأ';
       case 'speed_quiz': return 'مسابقة السرعة';
-      case 'matching': return 'المطابقة والتوصيل';
       case 'memory_cards': return 'كروت الذاكرة';
       case 'team_battle': return 'معركة الفرق';
-      case 'jeopardy': return 'شبكة التحديات';
+      case 'race_track': return 'سباق الخيول والسيارات';
+      case 'millionaire': return 'من سيربح المليون (سلم النجاة)';
+      case 'lucky_boxes': return 'صناديق الحظ الغامضة';
+      case 'target_shoot': return 'تصويب وضرب الأهداف';
       default: return type;
     }
   };

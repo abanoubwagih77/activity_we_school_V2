@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Play, Plus, Database, Users, History, Gamepad2, Settings,
-  RotateCw, Box, UserCheck, CheckCircle, Zap, Link2, 
-  Layers, Swords, Grid3X3, Copy, Trash2, ArrowLeft, Sparkles, BookOpen, CheckCircle2
+  RotateCw, Box, UserCheck, CheckCircle, Zap, 
+  Layers, Swords, Copy, Trash2, ArrowLeft, Sparkles, BookOpen, CheckCircle2,
+  Flag, Trophy, Package, Target
 } from 'lucide-react';
 import { soundEngine } from '../utils/audio';
 import { ActivityType } from '../types';
@@ -24,10 +25,12 @@ export const Dashboard: React.FC<{ onOpenCreateModal: () => void }> = ({ onOpenC
       case 'student_picker': return 'اختيار الطلاب';
       case 'true_false': return 'صح أو خطأ';
       case 'speed_quiz': return 'مسابقة السرعة';
-      case 'matching': return 'المطابقة والتوصيل';
       case 'memory_cards': return 'كروت الذاكرة';
       case 'team_battle': return 'معركة الفرق';
-      case 'jeopardy': return 'شبكة التحديات';
+      case 'race_track': return 'سباق الخيول والسيارات';
+      case 'millionaire': return 'من سيربح المليون (سلم النجاة)';
+      case 'lucky_boxes': return 'صناديق الحظ الغامضة';
+      case 'target_shoot': return 'تصويب وضرب الأهداف';
       default: return type;
     }
   };
@@ -59,7 +62,7 @@ export const Dashboard: React.FC<{ onOpenCreateModal: () => void }> = ({ onOpenC
     {
       type: 'student_picker',
       nameAr: 'اختيار الطلاب العشوائي',
-      descriptionAr: 'روليت عشوائي لاختيار الطالب المشارك بعدالة تامة دون حرج',
+      descriptionAr: 'روليت عشوائي لاختيار الطالب المشارك بعدالة تامة مع عرض الأسئلة التفاعلية',
       icon: <UserCheck className="w-5 h-5 text-amber-600 dark:text-amber-400" />,
       colorBg: 'bg-amber-50/70 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800',
       badgeColor: 'bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300',
@@ -81,14 +84,6 @@ export const Dashboard: React.FC<{ onOpenCreateModal: () => void }> = ({ onOpenC
       badgeColor: 'bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300',
     },
     {
-      type: 'matching',
-      nameAr: 'المطابقة والتوصيل',
-      descriptionAr: 'توصيل المصطلحات بالتعاريف ومخرجات الأكواد على شاشة العرض التفاعلية',
-      icon: <Link2 className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />,
-      colorBg: 'bg-cyan-50/70 dark:bg-cyan-950/40 border-cyan-200 dark:border-cyan-800',
-      badgeColor: 'bg-cyan-100 dark:bg-cyan-900/60 text-cyan-800 dark:text-cyan-300',
-    },
-    {
       type: 'memory_cards',
       nameAr: 'كروت الذاكرة التقنية',
       descriptionAr: 'كروت مقلوبة يتم فتحها للبحث عن أزواج المفاهيم والأكواد المتطابقة',
@@ -105,12 +100,36 @@ export const Dashboard: React.FC<{ onOpenCreateModal: () => void }> = ({ onOpenC
       badgeColor: 'bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300',
     },
     {
-      type: 'jeopardy',
-      nameAr: 'شبكة التحديات (Jeopardy)',
-      descriptionAr: 'أعمدة تصنيفات برمجية بنقاط متدرجة (10، 20، 30، 40) يختار منها الطلاب',
-      icon: <Grid3X3 className="w-5 h-5 text-teal-600 dark:text-teal-400" />,
-      colorBg: 'bg-teal-50/70 dark:bg-teal-950/40 border-teal-200 dark:border-teal-800',
-      badgeColor: 'bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-300',
+      type: 'race_track',
+      nameAr: 'سباق الخيول والسيارات (Race Track)',
+      descriptionAr: 'حلبة سباق تفاعلية تتقدم فيها سيارات وخيول الفرق عند كل إجابة صحيحة نحو خط النهاية',
+      icon: <Flag className="w-5 h-5 text-amber-600 dark:text-amber-400" />,
+      colorBg: 'bg-amber-50/70 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800',
+      badgeColor: 'bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300',
+    },
+    {
+      type: 'millionaire',
+      nameAr: 'من سيربح المليون (سلم النجاة)',
+      descriptionAr: 'سلم جوائز من 15 مرحلة مع وسائل المساعدة الشهيرة (50:50، تصويت الجمهور، تبديل السؤال)',
+      icon: <Trophy className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />,
+      colorBg: 'bg-yellow-50/70 dark:bg-yellow-950/40 border-yellow-200 dark:border-yellow-800',
+      badgeColor: 'bg-yellow-100 dark:bg-yellow-900/60 text-yellow-800 dark:text-yellow-300',
+    },
+    {
+      type: 'lucky_boxes',
+      nameAr: 'صناديق الحظ الغامضة',
+      descriptionAr: 'صناديق كنز غامضة يخفي كل منها مفاجأة حظ سحرية (مضاعفة النقاط، درع حماية، كنز ملكي)',
+      icon: <Package className="w-5 h-5 text-pink-600 dark:text-pink-400" />,
+      colorBg: 'bg-pink-50/70 dark:bg-pink-950/40 border-pink-200 dark:border-pink-800',
+      badgeColor: 'bg-pink-100 dark:bg-pink-900/60 text-pink-800 dark:text-pink-300',
+    },
+    {
+      type: 'target_shoot',
+      nameAr: 'تصويب وضرب الأهداف (Target Shoot)',
+      descriptionAr: 'ميدان رماية دقيق يطلق سهام الإجابة نحو منتصف الهدف مع مضاعف كومبو للضربات المتتالية',
+      icon: <Target className="w-5 h-5 text-rose-600 dark:text-rose-400" />,
+      colorBg: 'bg-rose-50/70 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800',
+      badgeColor: 'bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-300',
     },
   ];
 

@@ -10,10 +10,12 @@ import { QuestionBoxesGame } from './QuestionBoxesGame';
 import { RandomStudentPickerGame } from './RandomStudentPickerGame';
 import { TrueFalseGame } from './TrueFalseGame';
 import { SpeedQuizGame } from './SpeedQuizGame';
-import { MatchingGame } from './MatchingGame';
 import { MemoryCardsGame } from './MemoryCardsGame';
 import { TeamBattleGame } from './TeamBattleGame';
-import { JeopardyGame } from './JeopardyGame';
+import { RaceTrackGame } from './RaceTrackGame';
+import { MillionaireGame } from './MillionaireGame';
+import { LuckyBoxesGame } from './LuckyBoxesGame';
+import { TargetShootGame } from './TargetShootGame';
 import { SessionSummaryModal } from './SessionSummaryModal';
 
 export const PresentationContainer: React.FC = () => {
@@ -40,10 +42,12 @@ export const PresentationContainer: React.FC = () => {
       case 'student_picker': return 'اختيار الطلاب';
       case 'true_false': return 'صح أو خطأ';
       case 'speed_quiz': return 'مسابقة السرعة';
-      case 'matching': return 'المطابقة والتوصيل';
       case 'memory_cards': return 'كروت الذاكرة';
       case 'team_battle': return 'معركة الفرق';
-      case 'jeopardy': return 'شبكة التحديات';
+      case 'race_track': return 'سباق الخيول والسيارات';
+      case 'millionaire': return 'من سيربح المليون (سلم النجاة)';
+      case 'lucky_boxes': return 'صناديق الحظ الغامضة';
+      case 'target_shoot': return 'تصويب وضرب الأهداف';
       default: return type;
     }
   };
@@ -253,6 +257,9 @@ export const PresentationContainer: React.FC = () => {
           <RandomStudentPickerGame
             classes={classes}
             defaultClassId={activeActivity.classId}
+            questions={activityQuestions}
+            timerDuration={activeActivity.timerDuration || settings?.defaultTimerSeconds || 20}
+            onAwardPoints={handleAwardPoints}
           />
         )}
 
@@ -274,17 +281,10 @@ export const PresentationContainer: React.FC = () => {
           />
         )}
 
-        {activeActivity.type === 'matching' && (
-          <MatchingGame
-            pairs={activeActivity.matchingPairs}
-            onAwardPoints={handleAwardPoints}
-            onFinish={handleFinishActivity}
-          />
-        )}
-
         {activeActivity.type === 'memory_cards' && (
           <MemoryCardsGame
             pairs={activeActivity.matchingPairs}
+            questions={activityQuestions}
             onAwardPoints={handleAwardPoints}
             onFinish={handleFinishActivity}
           />
@@ -301,12 +301,40 @@ export const PresentationContainer: React.FC = () => {
           />
         )}
 
-        {activeActivity.type === 'jeopardy' && (
-          <JeopardyGame
+        {activeActivity.type === 'race_track' && (
+          <RaceTrackGame
             questions={activityQuestions}
-            teams={activeActivity.scoreMode === 'team' ? teams : undefined}
-            onAwardPoints={handleAwardPoints}
+            teams={teams}
             onUpdateTeamScore={handleUpdateTeamScore}
+            onSetTeamScore={handleSetTeamScore}
+            onFinish={handleFinishActivity}
+            timerDuration={activeActivity.timerDuration || settings?.defaultTimerSeconds || 20}
+          />
+        )}
+
+        {activeActivity.type === 'millionaire' && (
+          <MillionaireGame
+            questions={activityQuestions}
+            onAwardPoints={handleAwardPoints}
+            onFinish={handleFinishActivity}
+            timerDuration={activeActivity.timerDuration || settings?.defaultTimerSeconds || 30}
+          />
+        )}
+
+        {activeActivity.type === 'lucky_boxes' && (
+          <LuckyBoxesGame
+            questions={activityQuestions}
+            onAwardPoints={handleAwardPoints}
+            onFinish={handleFinishActivity}
+            timerDuration={activeActivity.timerDuration || settings?.defaultTimerSeconds || 25}
+          />
+        )}
+
+        {activeActivity.type === 'target_shoot' && (
+          <TargetShootGame
+            questions={activityQuestions}
+            onAwardPoints={handleAwardPoints}
+            onFinish={handleFinishActivity}
             timerDuration={activeActivity.timerDuration || settings?.defaultTimerSeconds || 20}
           />
         )}

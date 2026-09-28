@@ -8,10 +8,14 @@ export type ActivityType =
   | 'student_picker'
   | 'true_false'
   | 'speed_quiz'
-  | 'matching'
   | 'memory_cards'
   | 'team_battle'
-  | 'jeopardy';
+  | 'race_track'
+  | 'millionaire'
+  | 'lucky_boxes'
+  | 'target_shoot'
+  | 'matching'
+  | 'jeopardy'; // preserved in type union for backward compatibility with existing saved records
 
 export type BoxBehavior = 'disappear' | 'dimmed' | 'disabled';
 
