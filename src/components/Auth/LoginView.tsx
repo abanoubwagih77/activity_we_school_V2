@@ -3,6 +3,7 @@ import { Lock, User, Eye, EyeOff, LogIn, KeyRound, Check, ArrowRight } from 'luc
 import { soundEngine } from '../../utils/audio';
 import { AuthUser } from '../../types';
 import { WeLogo } from '../common/WeLogo';
+import { Footer } from '../common/Footer';
 import { useApp } from '../../context/AppContext';
 
 interface LoginViewProps {
@@ -93,8 +94,9 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-purple-50/30 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex flex-col justify-center items-center p-4 sm:p-6 transition-colors duration-200" dir="rtl">
-      {/* Brand Header */}
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-purple-50/30 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex flex-col justify-between transition-colors duration-200" dir="rtl">
+      <div className="flex-1 flex flex-col justify-center items-center p-4 sm:p-6 w-full">
+        {/* Brand Header */}
       <div className="text-center mb-6 max-w-md flex flex-col items-center">
         <div className="mb-3 transform hover:scale-105 transition-transform">
           <WeLogo size="xl" showText={true} />
@@ -215,6 +217,10 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
           </p>
         </div>
       </div>
+      </div>
+
+      {/* Rights & Contact Footer */}
+      <Footer />
 
       {/* Forgot Password Modal */}
       {showForgotModal && (

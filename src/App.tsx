@@ -10,6 +10,7 @@ import { HistoryView } from './components/History/HistoryView';
 import { SettingsView } from './components/Settings/SettingsView';
 import { PresentationContainer } from './components/Presentation/PresentationContainer';
 import { LoginView } from './components/Auth/LoginView';
+import { Footer } from './components/common/Footer';
 
 const MainLayout: React.FC = () => {
   const { view, activeActivity, authUser, login } = useApp();
@@ -36,6 +37,9 @@ const MainLayout: React.FC = () => {
         {view === 'history' && <HistoryView />}
         {view === 'settings' && <SettingsView />}
       </main>
+
+      {/* Rights & Contact Footer */}
+      <Footer />
 
       {/* Fullscreen / Projector Classroom Mode when activity is launched */}
       {activeActivity && <PresentationContainer />}
