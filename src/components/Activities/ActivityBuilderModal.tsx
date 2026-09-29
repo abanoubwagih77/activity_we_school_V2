@@ -28,10 +28,11 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
   const [hasTimer, setHasTimer] = useState<boolean>(initialActivity?.timerDuration ? true : false);
   const [preventRepeats, setPreventRepeats] = useState<boolean>(initialActivity?.preventQuestionRepeats ?? true);
 
-  // Selected Question IDs
+  // Selected Question IDs (starts empty for new activity so user only gets their chosen questions)
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<string[]>(
-    initialActivity?.questionIds || questions.slice(0, 10).map(q => q.id)
+    initialActivity?.questionIds || []
   );
+  const [showOnlySelected, setShowOnlySelected] = useState<boolean>(false);
 
   // Teams
   const [teams, setTeams] = useState<Team[]>(
@@ -144,6 +145,7 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
   const selectedLessonObj = lessons.find(l => l.id === selectedLessonFilter);
 
   const filteredQuestions = questions.filter(q => {
+    if (showOnlySelected && !selectedQuestionIds.includes(q.id)) return false;
     if (categoryFilter !== 'all' && q.category !== categoryFilter) return false;
     if (selectedLessonFilter !== 'all') {
       if (selectedLessonFilter === 'none') {
@@ -414,6 +416,19 @@ export const ActivityBuilderModal: React.FC<ActivityBuilderModalProps> = ({
               </div>
 
                 <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowOnlySelected(prev => !prev)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      showOnlySelected
+                        ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-400'
+                        : 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60'
+                    }`}
+                  >
+                    <CheckSquare className="w-3.5 h-3.5" />
+                    <span>عرض المختارة فقط ({selectedQuestionIds.length})</span>
+                  </button>
+                  <span className="text-slate-300 dark:text-slate-600">|</span>
                   <button
                     type="button"
                     onClick={handleSelectAll}
